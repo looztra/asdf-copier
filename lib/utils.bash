@@ -65,7 +65,7 @@ install_version() {
     if [ -n "$uv_path" ]; then
       echo "Found uv, using it"
       uv venv --python "$(which python3)" "$venv_path"
-      VIRTUAL_ENV="$venv_path" "$venv_path/bin/pip" install "copier==${version}"
+      VIRTUAL_ENV="$venv_path" pip install "copier==${version}"
     fi
     cd "${install_path}"
     ln -s "${venv_path}/bin/copier" "${bin_install_path}/copier"
