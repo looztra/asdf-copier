@@ -9,6 +9,8 @@
 - [Contents](#contents)
 - [Dependencies](#dependencies)
 - [Install](#install)
+  - [Plugin](#plugin)
+  - [copier itself](#copier-itself)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -22,22 +24,27 @@ If `uv` is found, the virtual environment that hosts the `copier` package will b
 
 ## Install
 
-Plugin:
+### Plugin
+
+If asdf-vm/asdf-plugins#1034 is merged
 
 ```shell
-# Once the plugin will be registered in the asdf-plugins repo
 asdf plugin add copier
-# or
+```
+
+else
+
+```shell
 asdf plugin add copier https://github.com/looztra/asdf-copier.git
 ```
 
-copier:
+### copier itself
 
 ```shell
 # Show all installable versions
 asdf list all copier
 
-# Install specific version
+# Install latest version
 asdf install copier latest
 
 # Set a version globally (on your ~/.tool-versions file)
