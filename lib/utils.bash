@@ -47,6 +47,11 @@ download_release() {
   #curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
 }
 
+get_abs_filename() {
+  # $1 : relative filename
+  echo "$(cd "$(dirname "$1")" && pwd)/$(basename "$1")"
+}
+
 install_version() {
   local install_type="$1"
   local version="$2"
@@ -59,9 +64,8 @@ install_version() {
   (
     echo "*DEBUG$ install_path=[$install_path]"
     mkdir -p "$install_path"
-    local bin_install_path venv_path uv_path
-    bin_install_path="${install_path}/bin"
-    venv_path="$install_path/venv"
+    local venv_path uv_path
+    venv_path=$(get_abs_filename "$install_path/../venv")
 
     # Check if uv is installed
     uv_path=$(command -v uv 2>/dev/null)
@@ -73,7 +77,7 @@ install_version() {
       VIRTUAL_ENV="$venv_path" pip install --quiet "copier==${version}"
     fi
     cd "${install_path}"
-    ln -s "${venv_path}/bin/copier" "${bin_install_path}/copier"
+    ln -s "${venv_path}/bin/copier" copier
     # Assert copier executable exists.
     local tool_cmd
     tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
