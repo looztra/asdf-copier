@@ -1,26 +1,26 @@
-<div align="center">
+# asdf-copier <!-- omit in toc -->
 
-# asdf-copier [![Build](https://github.com/looztra/asdf-copier/actions/workflows/build.yml/badge.svg)](https://github.com/looztra/asdf-copier/actions/workflows/build.yml) [![Lint](https://github.com/looztra/asdf-copier/actions/workflows/lint.yml/badge.svg)](https://github.com/looztra/asdf-copier/actions/workflows/lint.yml)
+[![Build](https://github.com/looztra/asdf-copier/actions/workflows/build.yml/badge.svg)](https://github.com/looztra/asdf-copier/actions/workflows/build.yml) [![Lint](https://github.com/looztra/asdf-copier/actions/workflows/lint.yml/badge.svg)](https://github.com/looztra/asdf-copier/actions/workflows/lint.yml)
 
 [copier](https://copier.readthedocs.io/en/stable/) plugin for the [asdf version manager](https://asdf-vm.com).
 
 </div>
 
-# Contents
+## Contents
 
+- [Contents](#contents)
 - [Dependencies](#dependencies)
 - [Install](#install)
 - [Contributing](#contributing)
 - [License](#license)
 
-# Dependencies
-
-**TODO: adapt this section**
+## Dependencies
 
 - `bash`, `curl`, `tar`, and [POSIX utilities](https://pubs.opengroup.org/onlinepubs/9699919799/idx/utilities.html).
-- `SOME_ENV_VAR`: set this environment variable in your shell config to load the correct version of tool x.
+- a python 3 runtime
+- optional: [uv](https://docs.astral.sh/uv/)
 
-# Install
+## Install
 
 Plugin:
 
@@ -34,7 +34,7 @@ copier:
 
 ```shell
 # Show all installable versions
-asdf list-all copier
+asdf list all copier
 
 # Install specific version
 asdf install copier latest
@@ -49,12 +49,12 @@ copier --help
 Check [asdf](https://github.com/asdf-vm/asdf) readme for more instructions on how to
 install & manage versions.
 
-# Contributing
+## Contributing
 
 Contributions of any kind welcome! See the [contributing guide](contributing.md).
 
 [Thanks goes to these contributors](https://github.com/looztra/asdf-copier/graphs/contributors)!
 
-# License
+## License
 
 See [LICENSE](LICENSE) © [Christophe Furmaniak](https://github.com/looztra/)
