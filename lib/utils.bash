@@ -35,14 +35,16 @@ list_all_versions() {
 }
 
 download_release() {
+  # shellcheck disable=SC2034
   local version filename url
   version="$1"
+  # shellcheck disable=SC2034
   filename="$2"
 
-  url="$GH_REPO/archive/v${version}.tar.gz"
+  #url="$GH_REPO/archive/v${version}.tar.gz"
 
-  echo "* Downloading $TOOL_NAME release $version..."
-  curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
+  #echo "* Downloading $TOOL_NAME release $version..."
+  #curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
 }
 
 install_version() {
@@ -55,6 +57,7 @@ install_version() {
   fi
 
   (
+    echo "*DEBUG$ install_path=[$install_path]"
     mkdir -p "$install_path"
     local bin_install_path venv_path uv_path
     bin_install_path="${install_path}/bin"
