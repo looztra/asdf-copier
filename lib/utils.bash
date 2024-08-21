@@ -2,10 +2,8 @@
 
 set -euo pipefail
 
-# TODO: Ensure this is the correct GitHub homepage where releases can be downloaded for copier.
 GH_REPO="https://github.com/copier-org/copier"
 TOOL_NAME="copier"
-TOOL_TEST="copier --help"
 
 fail() {
   echo -e "asdf-$TOOL_NAME: $*"
@@ -62,7 +60,6 @@ install_version() {
   fi
 
   (
-    echo "*DEBUG$ install_path=[$install_path]"
     mkdir -p "$install_path"
     local venv_path uv_path
     venv_path=$(get_abs_filename "$install_path/../venv")
@@ -71,18 +68,26 @@ install_version() {
     uv_path=$(command -v uv 2>/dev/null)
     if [ -n "$uv_path" ]; then
       echo "* Found uv, using it"
-      echo "* Creating virtual environment with uv in $venv_path"
-      uv venv --quiet --python "$(which python3)" "$venv_path"
-      echo "* Installing copier in virtual environment"
-      VIRTUAL_ENV="$venv_path" uv pip install "copier==${version}"
+      echo "* Creating virtual environment with uv"
+      uv venv --quiet --python "$(which python)" "$venv_path"
+      echo "* Installing copier in virtual environment with uv"
+      VIRTUAL_ENV="$venv_path" uv pip install --quiet "copier==${version}"
+    else
+      echo "* uv not found, using bare venv instead"
+      echo "* Creating virtual environment with venv"
+      python3 -m venv "$venv_path"
+      # shellcheck disable=SC1091
+      source "$venv_path/bin/activate"
+      echo "* Installing copier in virtual environment with pip"
+      pip install --quiet "copier==${version}"
     fi
+
+    # Link copier executable where asdf expects it.
     cd "${install_path}"
     ln -s "${venv_path}/bin/copier" copier
-    # Assert copier executable exists.
-    local tool_cmd
-    tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
 
-    #test -x "$install_path/$tool_cmd" || fail "Expected $install_path/$tool_cmd to be executable."
+    # Assert copier executable exists.
+    test -x "$install_path/$TOOL_NAME" || fail "Expected $install_path/$TOOL_NAME to be executable."
 
     echo "$TOOL_NAME $version installation was successful!"
     echo "* Install locally or globally with:"
