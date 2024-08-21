@@ -47,7 +47,19 @@ jobs:
         run: |
           pre-commit run --all-files
 
-#      - name: Test plugin with bats
-#        run: |
-#          asdf plugin-add gitui $GITHUB_WORKSPACE
-#          bats test
+      - name: Test plugin with bats (no uv)
+        run: |
+          asdf plugin-add copier $GITHUB_WORKSPACE
+          bats test
+
+      - name: Install uv
+        run: |
+          asdf plugin add uv
+          asdf install uv latest
+          asdf global uv latest
+
+      - name: Test plugin with bats (with uv)
+        run: |
+          asdf plugin remove copier
+          asdf plugin-add copier $GITHUB_WORKSPACE
+          bats test
