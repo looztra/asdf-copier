@@ -69,13 +69,13 @@ install_version() {
     if [ -n "$uv_path" ]; then
       echo "* Found uv, using it"
       echo "* Creating virtual environment with uv"
-      uv venv --quiet --python "$(which python)" "$venv_path"
+      uv venv --quiet --prompt "asdf $TOOL_NAME venv" --python "$(which python)" "$venv_path"
       echo "* Installing copier in virtual environment with uv"
       VIRTUAL_ENV="$venv_path" uv pip install --quiet "copier==${version}"
     else
       echo "* uv not found, using bare venv instead"
       echo "* Creating virtual environment with venv"
-      python3 -m venv "$venv_path"
+      python -m venv --prompt "asdf $TOOL_NAME venv" "$venv_path"
       # shellcheck disable=SC1091
       source "$venv_path/bin/activate"
       echo "* Installing copier in virtual environment with pip"
@@ -89,12 +89,12 @@ install_version() {
     # Assert copier executable exists.
     test -x "$install_path/$TOOL_NAME" || fail "Expected $install_path/$TOOL_NAME to be executable."
 
-    echo "$TOOL_NAME $version installation was successful!"
-    echo "* Install locally or globally with:"
+    echo "* $TOOL_NAME $version installation was successful!"
+    echo "* Make it local or global with:"
     echo "asdf local $TOOL_NAME $version"
     echo "asdf global $TOOL_NAME $version"
   ) || (
-    #rm -rf "$install_path"
+    rm -rf "$install_path"
     fail "An error occurred while installing $TOOL_NAME $version."
   )
 }
