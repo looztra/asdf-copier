@@ -1,0 +1,104 @@
+# Local .terraform directories
+**/.terraform/*
+.terraform
+# .tfstate files
+**/*.tfstate
+**/*.tfstate.*
+
+#Ignore terraform plan file
+.tfplan*
+
+# Ignore Terraform version management tools
+# tfenv
+.terraform-version
+# tfswitch
+.tfswitchrc
+.tfswitchrc
+
+# Crash log files
+crash.log
+
+# Ignore override files as they are usually used to override resources locally and so
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# ignore ide files
+.idea
+*.iml
+.vscode
+
+*_credentials.json
+gcloud-creds/
+
+# Python
+.venv*/
+.pyenv
+python/**/samples/
+**/.ropeproject
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+.Python
+**/python/**/env/
+**/python/**/build/
+**/python/**/develop-eggs/
+**/python/**/dist/
+**/tests/assets/**/dist/
+**/python/**/downloads/
+**/python/**/eggs/
+**/python/**/.eggs/
+**/python/**/lib/
+**/python/**/lib64/
+**/python/**/parts/
+**/python/**/sdist/
+**/python/**/python/**/var/
+**/python/**/wheels/
+**/python/**/*.egg-info/
+**/python/**/.installed.cfg
+**/python/**/*.egg
+
+dist/
+sdist/
+eggs/
+.eggs/
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+#Ignore OSX file
+.DS_Store
+
+# APS/BU
+generated/
+
+# pyenv
+.python-version
+
+*.history/
+
+node_modules/
+**/node_modules/
+
+!.github/actions/clean-runner/dist

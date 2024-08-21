@@ -1,9 +1,6 @@
 # Description
-<!--- Provide a general summary of your changes in the Title above -->
 
-<!--- Describe your changes in detail -->
-
-## Motivation and Context
+## What this PR Provides
 
 <!--- Why is this change required? What problem does it solve? -->
 <!--- If it fixes an open issue, please link to the issue here. -->
@@ -15,6 +12,7 @@
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
 - [ ] Breaking change (fix or feature that would cause existing functionality to change)
+- [ ] Documentation
 
 ## Usage examples
 

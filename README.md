@@ -1,10 +1,8 @@
 # asdf-copier <!-- omit in toc -->
 
-[![Build](https://github.com/looztra/asdf-copier/actions/workflows/build.yml/badge.svg)](https://github.com/looztra/asdf-copier/actions/workflows/build.yml) [![Lint](https://github.com/looztra/asdf-copier/actions/workflows/lint.yml/badge.svg)](https://github.com/looztra/asdf-copier/actions/workflows/lint.yml)
+[![Build](https://github.com/looztra/asdf-copier/actions/workflows/code_checks.yml/badge.svg)](https://github.com/looztra/asdf-copier/actions/workflows/code_checks.yml)
 
 [copier](https://copier.readthedocs.io/en/stable/) plugin for the [asdf version manager](https://asdf-vm.com).
-
-</div>
 
 ## Contents
 
@@ -20,11 +18,14 @@
 - a python 3 runtime
 - optional: [uv](https://docs.astral.sh/uv/)
 
+If `uv` is found, the virtual environment that hosts the `copier` package will be created with it. The plugin will fallback to `python -m venv`if `uv` is not available.
+
 ## Install
 
 Plugin:
 
 ```shell
+# Once the plugin will be registered in the asdf-plugins repo
 asdf plugin add copier
 # or
 asdf plugin add copier https://github.com/looztra/asdf-copier.git
