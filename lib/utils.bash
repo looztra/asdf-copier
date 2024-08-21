@@ -67,7 +67,7 @@ install_version() {
     uv_path=$(command -v uv 2>/dev/null)
     if [ -n "$uv_path" ]; then
       echo "* Found uv, using it"
-      echo "* Creating virtual environment with uv"
+      echo "* Creating virtual environment with uv in $venv_path"
       uv venv --quiet --python "$(which python3)" "$venv_path"
       echo "* Installing copier in virtual environment"
       VIRTUAL_ENV="$venv_path" pip install --quiet "copier==${version}"
