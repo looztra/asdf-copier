@@ -63,9 +63,11 @@ install_version() {
     # Check if uv is installed
     uv_path=$(command -v uv 2>/dev/null)
     if [ -n "$uv_path" ]; then
-      echo "Found uv, using it"
-      uv venv --python "$(which python3)" "$venv_path"
-      VIRTUAL_ENV="$venv_path" pip install "copier==${version}"
+      echo "* Found uv, using it"
+      echo "* Creating virtual environment with uv"
+      uv venv --quiet --python "$(which python3)" "$venv_path"
+      echo "* Installing copier in virtual environment"
+      VIRTUAL_ENV="$venv_path" pip install --quiet "copier==${version}"
     fi
     cd "${install_path}"
     ln -s "${venv_path}/bin/copier" "${bin_install_path}/copier"
@@ -79,7 +81,7 @@ install_version() {
     echo "asdf local $TOOL_NAME $version"
     echo "asdf global $TOOL_NAME $version"
   ) || (
-    rm -rf "$install_path"
+    #rm -rf "$install_path"
     fail "An error occurred while installing $TOOL_NAME $version."
   )
 }
