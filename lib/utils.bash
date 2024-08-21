@@ -74,7 +74,7 @@ install_version() {
       echo "* Creating virtual environment with uv in $venv_path"
       uv venv --quiet --python "$(which python3)" "$venv_path"
       echo "* Installing copier in virtual environment"
-      VIRTUAL_ENV="$venv_path" pip install "copier==${version}"
+      VIRTUAL_ENV="$venv_path" uv pip install "copier==${version}"
     fi
     cd "${install_path}"
     ln -s "${venv_path}/bin/copier" copier
