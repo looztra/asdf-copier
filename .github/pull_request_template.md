@@ -13,6 +13,8 @@
 - [ ] New feature (non-breaking change which adds functionality)
 - [ ] Breaking change (fix or feature that would cause existing functionality to change)
 - [ ] Documentation
+- [ ] Chore (gha, tools, pre-commit)
+- [ ] Tests
 
 ## Usage examples
 

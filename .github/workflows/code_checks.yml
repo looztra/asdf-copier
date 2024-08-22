@@ -49,7 +49,7 @@ jobs:
 
       - name: Test plugin with bats (no uv)
         run: |
-          asdf plugin-add copier $GITHUB_WORKSPACE
+          asdf plugin-add copier "${GITHUB_WORKSPACE}"
           bats test
 
       - name: Install uv
@@ -61,5 +61,5 @@ jobs:
       - name: Test plugin with bats (with uv)
         run: |
           asdf plugin remove copier
-          asdf plugin-add copier $GITHUB_WORKSPACE
+          asdf plugin-add copier "${GITHUB_WORKSPACE}"
           bats test
