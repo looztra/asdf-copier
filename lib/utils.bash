@@ -50,34 +50,64 @@ get_abs_filename() {
   echo "$(cd "$(dirname "$1")" && pwd)/$(basename "$1")"
 }
 
+resolve_python_path() {
+  # if ASDF_PYAPP_DEFAULT_PYTHON_PATH is set, use it, else:
+  # 1. try $(asdf which python)
+  # 2. try $(which python3)
+  if [ -n "${ASDF_PYAPP_DEFAULT_PYTHON_PATH+x}" ]; then
+    echo "* ASDF_PYAPP_DEFAULT_PYTHON_PATH is set, using python at [$ASDF_PYAPP_DEFAULT_PYTHON_PATH]"
+    ASDF_PYAPP_RESOLVED_PYTHON_PATH="$ASDF_PYAPP_DEFAULT_PYTHON_PATH"
+    return
+  fi
+  local python_path
+
+  # Borrowed to asdf-pyapp plugin
+  # cd to $HOME to avoid picking up a local python from .tool-versions
+  # pipx is best when install with a global python
+  pushd "$HOME" >/dev/null || fail "Failed to pushd \$HOME"
+  python_path=$(asdf which python3 2>/dev/null)
+  if [ -z "$python_path" ]; then
+    python_path=$(which python3)
+    if [ -z "$python_path" ]; then
+      fail "* Python3 not found in asdf or system"
+    fi
+    echo "* Python not found in asdf, using system python at [$python_path]"
+  else
+    echo "* Found python in asdf, using it at [$python_path]"
+  fi
+  ASDF_PYAPP_RESOLVED_PYTHON_PATH="${python_path}"
+  popd >/dev/null || fail "Failed to popd"
+}
+
 install_version() {
   local install_type="$1"
   local version="$2"
   local install_path="${3%/bin}/bin"
 
-  if [ "$install_type" != "version" ]; then
-    fail "asdf-$TOOL_NAME supports release installs only"
+  if [ "${install_type}" != "version" ]; then
+    fail "asdf-${TOOL_NAME} supports release installs only"
   fi
 
   (
     mkdir -p "$install_path"
-    local venv_path uv_path
+    local venv_path uv_path python_path
     venv_path=$(get_abs_filename "$install_path/../venv")
-
+    #
+    resolve_python_path
     # Check if uv is installed
     uv_path=$(command -v uv 2>/dev/null)
     if [ -n "$uv_path" ]; then
       echo "* Found uv, using it"
       echo "* Creating virtual environment with uv"
-      uv venv --quiet --prompt "asdf $TOOL_NAME venv" --python "$(which python)" "$venv_path"
+      uv venv --quiet --prompt "asdf $TOOL_NAME venv" --python "${ASDF_PYAPP_RESOLVED_PYTHON_PATH}" "${venv_path}"
       echo "* Installing copier in virtual environment with uv"
-      VIRTUAL_ENV="$venv_path" uv pip install --quiet "copier==${version}"
+      VIRTUAL_ENV="${venv_path}" uv pip install --quiet "copier==${version}"
     else
       echo "* uv not found, using bare venv instead"
       echo "* Creating virtual environment with venv"
-      python -m venv --prompt "asdf $TOOL_NAME venv" "$venv_path"
+      "${ASDF_PYAPP_RESOLVED_PYTHON_PATH}" -m venv --prompt "asdf $TOOL_NAME venv" "${venv_path}"
       # shellcheck disable=SC1091
-      source "$venv_path/bin/activate"
+      source "${venv_path}/bin/activate"
       echo "* Installing copier in virtual environment with pip"
       pip install --quiet "copier==${version}"
     fi
@@ -87,14 +117,14 @@ install_version() {
     ln -s "${venv_path}/bin/copier" copier
 
     # Assert copier executable exists.
-    test -x "$install_path/$TOOL_NAME" || fail "Expected $install_path/$TOOL_NAME to be executable."
+    test -x "${install_path}/$TOOL_NAME" || fail "Expected ${install_path}/$TOOL_NAME to be executable."
 
-    echo "* $TOOL_NAME $version installation was successful!"
+    echo "* ${TOOL_NAME} ${version} installation was successful!"
     echo "* Make it local or global with:"
-    echo "asdf local $TOOL_NAME $version"
-    echo "asdf global $TOOL_NAME $version"
+    echo "asdf local ${TOOL_NAME} ${version}"
+    echo "asdf global ${TOOL_NAME} ${version}"
   ) || (
-    rm -rf "$install_path"
-    fail "An error occurred while installing $TOOL_NAME $version."
+    rm -rf "${install_path}"
+    fail "An error occurred while installing ${TOOL_NAME} ${version}."
   )
 }
