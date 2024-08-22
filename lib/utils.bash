@@ -47,7 +47,9 @@ download_release() {
 
 get_abs_filename() {
   # $1 : relative filename
-  echo "$(cd "$(dirname "$1")" && pwd)/$(basename "$1")"
+  local abs_path
+  abs_path="$(cd "$(dirname "$1")" && pwd)/$(basename "$1")"
+  printf "%s" "$abs_path"
 }
 
 resolve_python_path() {
@@ -55,7 +57,7 @@ resolve_python_path() {
   # 1. try $(asdf which python)
   # 2. try $(which python3)
   if [ -n "${ASDF_PYAPP_DEFAULT_PYTHON_PATH+x}" ]; then
-    echo "* ASDF_PYAPP_DEFAULT_PYTHON_PATH is set, using python at [$ASDF_PYAPP_DEFAULT_PYTHON_PATH]"
+    printf "* ASDF_PYAPP_DEFAULT_PYTHON_PATH is set, using python at [%s]\n" "$ASDF_PYAPP_DEFAULT_PYTHON_PATH"
     ASDF_PYAPP_RESOLVED_PYTHON_PATH="$ASDF_PYAPP_DEFAULT_PYTHON_PATH"
     return
   fi
@@ -71,9 +73,9 @@ resolve_python_path() {
     if [ -z "$python_path" ]; then
       fail "* Python3 not found in asdf or system"
     fi
-    echo "* Python not found in asdf, using system python at [$python_path]"
+    printf "* Python not found in asdf, using system python at [%s]\n" "$python_path"
   else
-    echo "* Found python in asdf, using it at [$python_path]"
+    printf "* Found python in asdf, using it at [%s]\n" "$python_path"
   fi
   ASDF_PYAPP_RESOLVED_PYTHON_PATH="${python_path}"
   popd >/dev/null || fail "Failed to popd"
@@ -97,18 +99,18 @@ install_version() {
     # Check if uv is installed
     uv_path=$(command -v uv 2>/dev/null)
     if [ -n "$uv_path" ]; then
-      echo "* Found uv, using it"
-      echo "* Creating virtual environment with uv"
+      printf "* Found uv, using it\n"
+      printf "* Creating virtual environment with uv\n"
       uv venv --quiet --prompt "asdf $TOOL_NAME venv" --python "${ASDF_PYAPP_RESOLVED_PYTHON_PATH}" "${venv_path}"
-      echo "* Installing copier in virtual environment with uv"
+      printf "* Installing copier in virtual environment with uv\n"
       VIRTUAL_ENV="${venv_path}" uv pip install --quiet "copier==${version}"
     else
-      echo "* uv not found, using bare venv instead"
-      echo "* Creating virtual environment with venv"
+      printf "* uv not found, using bare venv instead\n"
+      printf "* Creating virtual environment with venv\n"
       "${ASDF_PYAPP_RESOLVED_PYTHON_PATH}" -m venv --prompt "asdf $TOOL_NAME venv" "${venv_path}"
       # shellcheck disable=SC1091
-      source "${venv_path}/bin/activate"
-      echo "* Installing copier in virtual environment with pip"
+      . "${venv_path}/bin/activate"
+      printf "* Installing copier in virtual environment with pip\n"
       pip install --quiet "copier==${version}"
     fi
 
@@ -119,10 +121,10 @@ install_version() {
     # Assert copier executable exists.
     test -x "${install_path}/$TOOL_NAME" || fail "Expected ${install_path}/$TOOL_NAME to be executable."
 
-    echo "* ${TOOL_NAME} ${version} installation was successful!"
-    echo "* Make it local or global with:"
-    echo "asdf local ${TOOL_NAME} ${version}"
-    echo "asdf global ${TOOL_NAME} ${version}"
+    printf "* %s %s installation was successful!\n" "${TOOL_NAME}" "${version}"
+    printf "* Make it local or global with:\n"
+    printf "asdf local %s %s\n" "${TOOL_NAME}" "${version}"
+    printf "asdf global %s %s\n" "${TOOL_NAME}" "${version}"
   ) || (
     rm -rf "${install_path}"
     fail "An error occurred while installing ${TOOL_NAME} ${version}."
