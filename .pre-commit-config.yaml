@@ -9,6 +9,7 @@ repos:
         args:
           - --allow-multiple-documents
       - id: check-json # Validates JSON files
+        exclude: ^.vscode/.*
       - id: check-toml # Validates TOML files
       - id: check-xml # Validates XML files
       - id: check-added-large-files # Checks for files that are added to the repository that are larger than a threshold
@@ -16,6 +17,11 @@ repos:
       - id: check-merge-conflict # Checks for files that contain merge conflict strings
       - id: detect-private-key # Check for the existence of private keys
       - id: check-executables-have-shebangs # Checks that executables have shebangs
+
+  - repo: https://gitlab.com/bmares/check-json5
+    rev: v1.0.0
+    hooks:
+      - id: check-json5
 
   - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
     rev: 2.7.3
