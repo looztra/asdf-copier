@@ -6,7 +6,7 @@ GH_REPO="https://github.com/copier-org/copier"
 TOOL_NAME="copier"
 
 fail() {
-  echo -e "asdf-$TOOL_NAME: $*"
+  printf "asdf-%s: %s\n" $TOOL_NAME "$*"
   exit 1
 }
 
@@ -73,9 +73,9 @@ resolve_python_path() {
     if [ -z "$python_path" ]; then
       fail "* Python3 not found in asdf or system"
     fi
-    printf "* Python not found in asdf, using system python at [%s]\n" "$python_path"
+    printf "* Python3 not found in asdf, using system python at [%s]\n" "$python_path"
   else
-    printf "* Found python in asdf, using it at [%s]\n" "$python_path"
+    printf "* Found python3 in asdf, using it at [%s]\n" "$python_path"
   fi
   ASDF_PYAPP_RESOLVED_PYTHON_PATH="${python_path}"
   popd >/dev/null || fail "Failed to popd"
