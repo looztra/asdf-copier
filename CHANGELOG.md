@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/looztra/asdf-copier/compare/v1.0.0...v1.1.0) (2024-08-22)
+
+
+### Features
+
+* **python:** better detect asdf python versions ([#10](https://github.com/looztra/asdf-copier/issues/10)) ([3745a71](https://github.com/looztra/asdf-copier/commit/3745a710b43b6974c0af95342062945cec0f9e1f))
+
 ## 1.0.0 (2024-08-21)
 
 
