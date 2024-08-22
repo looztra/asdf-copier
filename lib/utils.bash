@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 set -euo pipefail
 
 GH_REPO="https://github.com/copier-org/copier"
@@ -119,7 +118,7 @@ install_version() {
     ln -s "${venv_path}/bin/copier" copier
 
     # Assert copier executable exists.
-    test -x "${install_path}/$TOOL_NAME" || fail "Expected ${install_path}/$TOOL_NAME to be executable."
+    [ -x "${install_path}/$TOOL_NAME" ] || fail "Expected ${install_path}/$TOOL_NAME to be executable."
 
     printf "* %s %s installation was successful!\n" "${TOOL_NAME}" "${version}"
     printf "* Make it local or global with:\n"

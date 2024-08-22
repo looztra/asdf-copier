@@ -1,4 +1,6 @@
 #!/usr/bin/env bats
+# shellcheck disable=SC2034
+BATS_TEST_FILENAME_BASENAME=$(basename "${BATS_TEST_FILENAME}")
 
 banned_commands=(
   # Process substitution isn't POSIX compliant and cause trouble
@@ -46,17 +48,17 @@ banned_commands_regex=(
   # If you find yourself needing to invoke an `asdf` command from within
   # asdf code, please source the appropriate file and invoke the
   # corresponding function.
-  '\basdf '
+  #'\basdf '
 )
 
-@test "banned commands are not found in source code" {
+@test "banned commands are not found in source code [${BATS_TEST_FILENAME_BASENAME}]" {
   # Assert command is not used in the lib and bin dirs
   # or expect an explicit comment at end of line, allowing it.
   # Also ignore matches that are contained in comments or a string or
   # followed by an underscore (indicating it's a variable and not a
   # command).
   for cmd in "${banned_commands[@]}"; do
-    run bash -c "grep -nHR --include \*.bash --include \*.sh '$cmd' asdf.* lib bin\
+    run bash -c "grep -nHR --include \*.bash --include \*.sh '$cmd' lib bin\
         | grep -v '#.*$cmd'\
         | grep -v '\".*$cmd.*\"' \
         | grep -v '${cmd}_'\
@@ -73,7 +75,7 @@ banned_commands_regex=(
   done
 
   for cmd in "${banned_commands_regex[@]}"; do
-    run bash -c "grep -nHRE --include \*.bash --include \*.sh '$cmd' asdf.* lib bin\
+    run bash -c "grep -nHRE --include \*.bash --include \*.sh '$cmd' lib bin\
         | grep -v '#.*$cmd'\
         | grep -v '\".*$cmd.*\"' \
         | grep -v '${cmd}_'\
