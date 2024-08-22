@@ -9,36 +9,39 @@
 - [Contents](#contents)
 - [Dependencies](#dependencies)
 - [Install](#install)
-  - [Plugin](#plugin)
-  - [copier itself](#copier-itself)
+  - [add the plugin](#add-the-plugin)
+  - [install copier](#install-copier)
+- [Note](#note)
 - [Contributing](#contributing)
 - [License](#license)
 
 ## Dependencies
 
-- `bash`, `curl`, `tar`, and [POSIX utilities](https://pubs.opengroup.org/onlinepubs/9699919799/idx/utilities.html).
-- a python 3 runtime
+- `bash`, `curl`, and [POSIX utilities](https://pubs.opengroup.org/onlinepubs/9699919799/idx/utilities.html).
+- a python 3 runtime (provided through [asdf-python](https://github.com/asdf-community/asdf-python) or not)
 - optional: [uv](https://docs.astral.sh/uv/)
-
-If `uv` is found, the virtual environment that hosts the `copier` package will be created with it. The plugin will fallback to `python -m venv`if `uv` is not available.
 
 ## Install
 
-### Plugin
+### add the plugin
 
-If asdf-vm/asdf-plugins#1034 is merged
+When asdf-vm/asdf-plugins#1034 will be merged
 
 ```shell
 asdf plugin add copier
 ```
 
-else
+Or:
 
 ```shell
 asdf plugin add copier https://github.com/looztra/asdf-copier.git
 ```
 
-### copier itself
+### install copier
+
+- If `uv` is found, the virtual environment that hosts the `copier` package will be created with it. The plugin will fallback to `python -m venv`if `uv` is not available.
+- Similarly to [asdf-pyapp](https://github.com/amrox/asdf-pyapp) (KUDOS to the maintainers!), the python **3** version used will be one provided by `asdf` if the [asdf-python](https://github.com/asdf-community/asdf-python) plugin is installed. The `asdf-copier` plugin will fallback to a system python3 installation if no python3 version is available through asdf.
+- You can override the detection mechanism by providing the `ASDF_PYAPP_DEFAULT_PYTHON_PATH` environment variable when installing a `copier` version (we decided to use the same env var name as pyapp to avoid having to define one more env var if possible)
 
 ```shell
 # Show all installable versions
@@ -56,6 +59,10 @@ copier --help
 
 Check [asdf](https://github.com/asdf-vm/asdf) readme for more instructions on how to
 install & manage versions.
+
+## Note
+
+- As `copier` is installed in a virtual environment, if the installation of python used to install copier does not exist anymore (if it comes from asdf or brew for instance), copier will fail to launch. You will need to uninstall/reinstall the copier version.
 
 ## Contributing
 

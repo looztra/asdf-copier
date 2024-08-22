@@ -1,11 +1,27 @@
 # Contributing
 
-Testing Locally:
+## When developing the plugin
+
+- Testing Locally:
 
 ```shell
-asdf plugin test <plugin-name> <plugin-url> [--asdf-tool-version <version>] [--asdf-plugin-gitref <git-ref>] [test-command*]
-
-asdf plugin test copier https://github.com/looztra/asdf-copier.git "copier --help"
+# Hack in a branch
+# commit locally (adjust to your git workflow/command preferences)
+git add .
+git commit -m "feat/fix/chore/...: {some semantic commit message or not}"
+# remove the plugin, and install it from your local branch
+asdf plugin remove copier
+asdf plugin add copier .
+# Test commands
+asdf list all copier
+asdf install copier latest
+# Repeat if needed
 ```
 
-Tests are automatically run in GitHub Actions on push and PR.
+- Tests are automatically run in GitHub Actions on push and PR.
+- You can adjust the `bats` test suite if needed
+
+## Before pushing
+
+- Make sure you installed the required dev dependencies with `asdf install`
+- Run the pre-commit hooks: `pre-commit run --all-files`
