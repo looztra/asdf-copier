@@ -28,6 +28,29 @@ jobs:
         with:
           command: copier --version
 
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Tools with asdf
+        uses: asdf-vm/actions/install@v3
+
+      - name: Test plugin with bats (no uv)
+        run: |
+          asdf plugin-add copier "${GITHUB_WORKSPACE}"
+          bats test
+
+      - name: Install uv
+        run: |
+          asdf plugin add uv
+          asdf install uv latest
+          asdf global uv latest
+
+      - name: Test plugin with bats (with uv)
+        run: |
+          asdf plugin remove copier
+          asdf plugin-add copier "${GITHUB_WORKSPACE}"
+          bats test
+
   lint_and_tests:
     runs-on: ubuntu-latest
     steps:
@@ -46,20 +69,3 @@ jobs:
         shell: bash
         run: |
           pre-commit run --all-files
-
-      - name: Test plugin with bats (no uv)
-        run: |
-          asdf plugin-add copier "${GITHUB_WORKSPACE}"
-          bats test
-
-      - name: Install uv
-        run: |
-          asdf plugin add uv
-          asdf install uv latest
-          asdf global uv latest
-
-      - name: Test plugin with bats (with uv)
-        run: |
-          asdf plugin remove copier
-          asdf plugin-add copier "${GITHUB_WORKSPACE}"
-          bats test
