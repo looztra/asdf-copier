@@ -2,6 +2,8 @@
 # shellcheck disable=SC2034
 BATS_TEST_FILENAME_BASENAME=$(basename "${BATS_TEST_FILENAME}")
 
+# bats file_tags=type:code
+
 banned_commands=(
   # Process substitution isn't POSIX compliant and cause trouble
   "<("

@@ -37,7 +37,7 @@ jobs:
       - name: Test plugin with bats (no uv)
         run: |
           asdf plugin-add copier "${GITHUB_WORKSPACE}"
-          bats test
+          bats --filter-tags type:features test
 
       - name: Install uv
         run: |
@@ -49,7 +49,7 @@ jobs:
         run: |
           asdf plugin remove copier
           asdf plugin-add copier "${GITHUB_WORKSPACE}"
-          bats test
+          bats --filter-tags type:features test
 
   lint_and_tests:
     runs-on: ubuntu-latest
@@ -69,3 +69,7 @@ jobs:
         shell: bash
         run: |
           pre-commit run --all-files
+
+      - name: Test code with bats
+        run: |
+          bats --filter-tags type:code test
